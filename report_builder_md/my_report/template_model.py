@@ -9,6 +9,9 @@ class report_model:
 
     KEY_LIST = ["CLASS_NO","MY_INFO", "APP_SPEC_DESCRIBE","APP_IMAGE","WORK_FLOW","MY_WEEKLY_REPORT","THANKS2MEMBER","MY_THOUGHTS_AND_NEXT_WORKS"]
 
+
+    ##データの作成（起動時）
+    ##初期データの作成処理
     def __init__(self):
         file_name = "status.json"
         if os.path.isfile(file_name):
@@ -23,6 +26,7 @@ class report_model:
             self.status["basic_info"]={}
             # （未実装）初期値入力ダイアログ呼び出し
         if "history" not in self.status.keys():
+            ##history がまだないなら、新しく作る
             self.status["history"]={}
             ## 作成者情報
             self.status["history"]["MY_INFO"] = self.get_template_my_info()
@@ -167,6 +171,7 @@ $MY_THOUGHTS_AND_NEXT_WORKS
 - 画像を取り扱う共通仕様は愛知花子と共同で作成したが，来週からは作業を分担してすすめる
 """
 
+
     def get_text_by_key(self, key_name : str) -> str:
         if self.KEY_LIST.index(key_name)==0:
             return str(self.status["basic_info"][self.KEY_LIST[0]])
@@ -184,6 +189,9 @@ $MY_THOUGHTS_AND_NEXT_WORKS
             return self.status["history"][self.KEY_LIST[6]]
         if self.KEY_LIST.index(key_name)==7:
             return self.status["history"][self.KEY_LIST[7]]
+
+
+    ##データの更新（編集）
 
     def set_text_by_key(self, key_name : str, value : str):
         if self.KEY_LIST.index(key_name)==0:
@@ -203,6 +211,8 @@ $MY_THOUGHTS_AND_NEXT_WORKS
         if self.KEY_LIST.index(key_name)==7:
             self.status['history'][self.KEY_LIST[7]] = value
 
+
+    ##データ保存
     def save_file(self, file_text : str, file_name : str = None):
         """
         さきにマークダウンとして保存してからhistoryを保存するとよい
